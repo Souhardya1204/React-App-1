@@ -1,7 +1,8 @@
+import { useState } from "react";
 import Expenses from "./components/expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 function App() {
-  const expenses = [
+  const DUMMY_EXPENSES = [
     {
       id: "e1",
       title: "Toilet Paper",
@@ -22,9 +23,11 @@ function App() {
       date: new Date(2021, 5, 12),
     },
   ];
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
   const onAddExpenseHandler = (newExpenseData) => {
-    console.log("In App file");
-    console.log(newExpenseData);
+    setExpenses((prevExpenses) => {
+      return [newExpenseData, ...prevExpenses];
+    });
   };
 
   const selectYearHandler = (selectedYear) => {

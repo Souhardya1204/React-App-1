@@ -1,34 +1,41 @@
+import { useState } from "react";
 import Card from "../UI/Card";
-import ExpenseItem from "./ExpenseItem";
 import "./Expenses.css";
 import ExpensesFilter from "./ExpensesFilter";
+import ExpensesList from "./ExpensesList";
+import ExpensesChart from "./ExpensesChart";
 function Expenses(props) {
+  const [selectedYear, setSelectedYear] = useState("");
+  // const [filteredExpenses, setFilteredExpenses] = useState(props.expenses);
   const onSelectYearHandler = (year) => {
-    props.onSelectYear(year);
+    setSelectedYear(year);
   };
+
+  // useEffect(() => {
+  //   if (selectedYear) {
+  //     setFilteredExpenses(
+  //       props.expenses.filter(
+  //         (ex) => ex.date.getFullYear().toString() === selectedYear.toString()
+  //       )
+  //     );
+  //   } else {
+  //     setFilteredExpenses(props.expenses);
+  //   }
+  // }, [selectedYear]);
+  const filteredExpenses = props.expenses.filter(
+    (expense) =>
+      expense.date.getFullYear().toString() === selectedYear.toString()
+  );
+  // let expensesContent = <p>No expenses found</p>;
+  // if (filteredExpenses.length > 0) {
+  //   expensesContent =
+  //   ));
+  // }
   return (
     <Card className="expenses">
-      <ExpensesFilter onSelectYear={onSelectYearHandler} />
-      <ExpenseItem
-        title={props.expenses[0].title}
-        amount={props.expenses[0].amount}
-        date={props.expenses[0].date}
-      />
-      <ExpenseItem
-        title={props.expenses[1].title}
-        amount={props.expenses[1].amount}
-        date={props.expenses[1].date}
-      />
-      <ExpenseItem
-        title={props.expenses[2].title}
-        amount={props.expenses[2].amount}
-        date={props.expenses[2].date}
-      />
-      <ExpenseItem
-        title={props.expenses[3].title}
-        amount={props.expenses[3].amount}
-        date={props.expenses[3].date}
-      />
+      <ExpensesFilter value={selectedYear} onSelectYear={onSelectYearHandler} />
+      <ExpensesChart expenses={filteredExpenses} />
+      <ExpensesList items={filteredExpenses} />
     </Card>
   );
 }
